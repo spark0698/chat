@@ -9,9 +9,11 @@ class BasicServer(object):
         self.port = int(port)
         self.socket = socket.socket()
 
-    def recv(self):
-        self.socket.bind(("127.0.0.1",self.port))
+    def setup(self):
+        self.socket.bind(("localhost",self.port))
         self.socket.listen(5)
+
+    def recv(self):
         (new_sock, client_addr) = self.socket.accept()
         return new_sock.recv(1024)
 
@@ -21,6 +23,11 @@ if len(args) != 2:
     sys.exit()
 
 server = BasicServer(args[1])
+server.setup()
 
-Data = server.recv()
-print Data
+while True:
+    Data = server.recv()
+    if Data == "":
+        pass
+    else:
+        print Data
